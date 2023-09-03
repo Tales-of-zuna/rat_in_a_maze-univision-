@@ -1,40 +1,38 @@
-import PlayerMovement from "./playerMovement";
-
 const Game = (parentPath: number) => {
   const generateMaze = (rows: number, cols: number): number[][] => {
     const maze: number[][] = Array.from({ length: rows }, () =>
       Array.from({ length: cols }, () => 0)
     );
-    const generatePath = (row: number, col: number) => {
-      maze[row][col] = 1;
-      const directions = [
-        [0, 2],
-        [2, 0],
-        [0, -2],
-        [-2, 0],
-      ];
+    // const generatePath = (row: number, col: number) => {
+    //   maze[row][col] = 1;
+    //   const directions = [
+    //     [0, 2],
+    //     [2, 0],
+    //     [0, -2],
+    //     [-2, 0],
+    //   ];
 
-      directions.sort(() => Math.random() - 0.5);
+    //   directions.sort(() => Math.random() - 0.5);
 
-      for (const [dx, dy] of directions) {
-        const newRow = row + dx;
-        const newCol = col + dy;
+    //   for (const [dx, dy] of directions) {
+    //     const newRow = row + dx;
+    //     const newCol = col + dy;
 
-        if (
-          newRow >= 0 &&
-          newRow < rows &&
-          newCol >= 0 &&
-          newCol < cols &&
-          maze[newRow][newCol] === 0
-        ) {
-          const midRow = row + dx / 2;
-          const midCol = col + dy / 2;
-          maze[midRow][midCol] = 1;
-          generatePath(newRow, newCol);
-        }
-      }
-    };
-    generatePath(0, 0);
+    //     if (
+    //       newRow >= 0 &&
+    //       newRow < rows &&
+    //       newCol >= 0 &&
+    //       newCol < cols &&
+    //       maze[newRow][newCol] === 0
+    //     ) {
+    //       const midRow = row + dx / 2;
+    //       const midCol = col + dy / 2;
+    //       maze[midRow][midCol] = 1;
+    //       generatePath(newRow, newCol);
+    //     }
+    //   }
+    // };
+    // generatePath(0, 0);
     return maze;
   };
 
@@ -838,7 +836,6 @@ const Game = (parentPath: number) => {
     }
     maze[15] = maze[1];
     demaze = paths[parentPath - 1].movements[chooseExit];
-    console.log("🚀 ~ file: game.tsx:840 ~ finalMaze ~ demaze:", demaze);
 
     let random = Math.floor(Math.random() * 2);
     for (let i = 0; i < demaze.length; i++) {

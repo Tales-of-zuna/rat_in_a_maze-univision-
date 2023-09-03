@@ -68,7 +68,7 @@ const Play = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [play, mounted, path]);
+  }, [start, path]);
   return (
     <div
       className={`${
@@ -229,7 +229,9 @@ const Play = () => {
               } transition-all duration-700 ease-in-out transform delay-700`}
             >
               Таны урамшууллын эрхийн тоо:
-              <span className="text-slate-200 text-2xl font-bold">5</span>
+              <span className="text-slate-200 text-2xl font-bold">
+                asdasdasd
+              </span>
             </p>
             <div
               className={`${

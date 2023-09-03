@@ -1,20 +1,23 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 const Home = () => {
+  // let gifts = useContext(GiftsContext);
+  // console.log("🚀 ~ file: page.tsx:7 ~ Home ~ gifts:", gifts);
+  const queryParameters = useSearchParams();
   const [play, setPlay] = useState(false);
   const router = useRouter();
-  const [userSubId, setUserSubId] = useState("hello");
+  const [userSubId, setUserSubId] = useState(queryParameters.get("subId"));
+
   const handleKeyPress = (event: { key: string }) => {
-    if (event.key === "Enter" && play) {
+    if (event.key === "Enter") {
       router.push("/play");
     }
   };
   const getData = async () => {
-    const res = await fetch("/api/getGifts?" + userSubId, {});
-    console.log("🚀 ~ file: page.tsx:16 ~ getData ~ res:", res);
-    if (!res.ok) {
+    const res = await fetch("/api/getGifts?subId=" + userSubId);
+    if (res.status !== 200) {
       throw new Error("Failed to fetch data");
     } else {
       setPlay(true);
@@ -52,12 +55,12 @@ const Home = () => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
-    getData();
+    const gifts = getData();
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [play, mounted]);
+  }, []);
   return (
     <div
       className="h-screen flex justify-center items-center"
