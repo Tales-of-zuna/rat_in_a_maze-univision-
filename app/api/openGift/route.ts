@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: { nextUrl: { searchParams: any } }) {
+export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams;
   const user = query.get("subId");
   const res = await fetch(
@@ -14,5 +14,6 @@ export async function GET(request: { nextUrl: { searchParams: any } }) {
     }
   );
   const gift = await res.json();
+  console.log("🚀 ~ file: route.ts:17 ~ GET ~ gift:", gift);
   return NextResponse.json(gift);
 }

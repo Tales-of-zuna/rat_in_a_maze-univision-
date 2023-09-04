@@ -3,36 +3,36 @@ const Game = (parentPath: number) => {
     const maze: number[][] = Array.from({ length: rows }, () =>
       Array.from({ length: cols }, () => 0)
     );
-    // const generatePath = (row: number, col: number) => {
-    //   maze[row][col] = 1;
-    //   const directions = [
-    //     [0, 2],
-    //     [2, 0],
-    //     [0, -2],
-    //     [-2, 0],
-    //   ];
+    const generatePath = (row: number, col: number) => {
+      maze[row][col] = 1;
+      const directions = [
+        [0, 2],
+        [2, 0],
+        [0, -2],
+        [-2, 0],
+      ];
 
-    //   directions.sort(() => Math.random() - 0.5);
+      directions.sort(() => Math.random() - 0.5);
 
-    //   for (const [dx, dy] of directions) {
-    //     const newRow = row + dx;
-    //     const newCol = col + dy;
+      for (const [dx, dy] of directions) {
+        const newRow = row + dx;
+        const newCol = col + dy;
 
-    //     if (
-    //       newRow >= 0 &&
-    //       newRow < rows &&
-    //       newCol >= 0 &&
-    //       newCol < cols &&
-    //       maze[newRow][newCol] === 0
-    //     ) {
-    //       const midRow = row + dx / 2;
-    //       const midCol = col + dy / 2;
-    //       maze[midRow][midCol] = 1;
-    //       generatePath(newRow, newCol);
-    //     }
-    //   }
-    // };
-    // generatePath(0, 0);
+        if (
+          newRow >= 0 &&
+          newRow < rows &&
+          newCol >= 0 &&
+          newCol < cols &&
+          maze[newRow][newCol] === 0
+        ) {
+          const midRow = row + dx / 2;
+          const midCol = col + dy / 2;
+          maze[midRow][midCol] = 1;
+          generatePath(newRow, newCol);
+        }
+      }
+    };
+    generatePath(0, 0);
     return maze;
   };
 
@@ -856,7 +856,7 @@ const Game = (parentPath: number) => {
       {finalMaze(maze).map((row: any[], rowIndex) => (
         <div key={rowIndex} className="flex ">
           {row.map((cell: number, colIndex) => (
-            <div key={colIndex} className="w-10 group relative h-10">
+            <div key={colIndex} className="w-12 group relative h-12">
               <div
                 className={` ${
                   (rowIndex == 3 && colIndex == 0) ||
@@ -872,7 +872,7 @@ const Game = (parentPath: number) => {
                     : cell === 1
                     ? "bg-purple-300 rounded-xl"
                     : "bg-transparent"
-                }  h-10 w-10`}
+                }  h-12 w-12`}
               ></div>
             </div>
           ))}

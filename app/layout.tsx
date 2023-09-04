@@ -1,4 +1,4 @@
-import GiftsProvider from "@/providers/giftsProvider";
+import { GiftsProvider } from "@/providers/giftsProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

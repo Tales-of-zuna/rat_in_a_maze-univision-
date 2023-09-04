@@ -2,8 +2,16 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import Cookies from "js-cookie";
 const Inventory = () => {
+  interface gift {
+    overall?: {
+      total_point_count: string;
+      total_gift_count: string;
+      total_lottery_count: string;
+    };
+    gifts?: any[];
+  }
   const gifts = [
     {
       name: "Huawei smart watch",
@@ -72,9 +80,11 @@ const Inventory = () => {
       </div>
     );
   };
-
+  const [inventory, setInventory] = useState<gift>();
+  console.log("🚀 ~ file: page.tsx:76 ~ Inventory ~ inventory:", inventory);
   useEffect(() => {
     setMounted(true);
+    setInventory(JSON.parse(Cookies.get("gifts") + ""));
     const handleKeyPress = (event: { key: string }) => {
       if (event.key === "ArrowLeft") {
         router.push("/play");

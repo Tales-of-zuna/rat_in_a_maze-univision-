@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: { nextUrl: { searchParams: any } }) {
+export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams;
+  console.log("🚀 ~ file: route.ts:5 ~ GET ~ query:", query);
   const user = query.get("subId");
   try {
     const res = await fetch(
@@ -15,7 +16,7 @@ export async function GET(request: { nextUrl: { searchParams: any } }) {
       }
     );
     const gifts = await res.json();
-
+    console.log("🚀 ~ file: route.ts:18 ~ GET ~ gifts:", gifts);
     return NextResponse.json(gifts);
   } catch (error) {
     throw new Error();

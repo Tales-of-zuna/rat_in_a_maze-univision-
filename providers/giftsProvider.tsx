@@ -1,13 +1,14 @@
 "use client";
-import { createContext } from "react";
+import { useSearchParams } from "next/navigation";
 
-const GiftsProvider = ({ children }: { children: React.ReactNode }) => {
-  const GiftContext = createContext({});
+import { createContext, useEffect, useState } from "react";
+
+export const GiftContext = createContext({});
+
+export const GiftsProvider = ({ children }: { children: React.ReactNode }) => {
+  let [gifts, setGifts] = useState({});
+
   return (
-    <GiftContext.Provider value={{ name: "gifts" }}>
-      {children}
-    </GiftContext.Provider>
+    <GiftContext.Provider value={{ gifts }}>{children}</GiftContext.Provider>
   );
 };
-
-export default GiftsProvider;

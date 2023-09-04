@@ -1,29 +1,27 @@
 "use client";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { NextResponse } from "next/server";
 import { useContext, useEffect, useState } from "react";
-const Home = () => {
-  // let gifts = useContext(GiftsContext);
-  // console.log("🚀 ~ file: page.tsx:7 ~ Home ~ gifts:", gifts);
-  const queryParameters = useSearchParams();
-  const [play, setPlay] = useState(false);
-  const router = useRouter();
-  const [userSubId, setUserSubId] = useState(queryParameters.get("subId"));
+import { GiftContext } from "@/providers/giftsProvider";
+import Cookies from "js-cookie";
 
-  const handleKeyPress = (event: { key: string }) => {
-    if (event.key === "Enter") {
-      router.push("/play");
-    }
-  };
+const Home = () => {
+  const [play, setPlay] = useState(false);
+  const { ...setGifts } = useContext(GiftContext);
+
+  const router = useRouter();
+  const [giftsData, setGiftsData] = useState();
+  const queryParameters = useSearchParams();
+  const userSubId = queryParameters.get("subId");
   const getData = async () => {
     const res = await fetch("/api/getGifts?subId=" + userSubId);
-    if (res.status !== 200) {
-      throw new Error("Failed to fetch data");
-    } else {
-      setPlay(true);
-      return res.json();
-    }
+    const data = await res.json();
+    Cookies.set("gifts", JSON.stringify(data));
+    Cookies.set("userId", userSubId + "");
+    setPlay(true);
   };
+
   const loadingScreen = () => {
     if (play) {
       return (
@@ -52,15 +50,23 @@ const Home = () => {
       );
     }
   };
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
-    const gifts = getData();
+    getData();
+    const handleKeyPress = (event: { key: string }) => {
+      if (event.key === "Enter") {
+        router.push("/play");
+      }
+    };
+
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
+
   return (
     <div
       className="h-screen flex justify-center items-center"
@@ -70,7 +76,7 @@ const Home = () => {
       }}
     >
       {/* border bg-slate-950 border-slate-600 */}
-      <div className="w-1/2 space-y-8 text-slate-200 rounded-xl  p-16">
+      <div className="w-1/2 space-y-8 text-slate-300 rounded-xl  p-16">
         <div className="flex justify-center">
           <Image
             alt=""
@@ -79,13 +85,15 @@ const Home = () => {
             src={"/assets/AltanNamar_title.png"}
           />
         </div>
-        <p className="text-center">
-          Алтан намрын хөтөлбөр 2023.09.06-2023.10.17 хооронд үргэлжилж байна.
+        <p className=" text-center">
+          Алтан намрын хөтөлбөр{" "}
+          <span className="text-white font-bold">2023.09.06-2023.10.17</span>{" "}
+          хооронд үргэлжилж байна.
           <br />
           Та урамшууллын эрхээрээ тоглоом тоглоод дараах бэлгүүдийн эзэн болох
           боломжтой.
         </p>
-        <div className=" flex px-8 justify-center">
+        <div className=" flex py-4 bg-slate-800  rounded-xl bg-opacity-30 px-8 justify-center">
           <div className="w-full h-52 relative">
             <Image
               className="object-contain"

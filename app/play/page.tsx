@@ -1,35 +1,25 @@
 "use client";
 import Game from "@/components/game";
+import GiftRecieve from "@/components/giftRecieve";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import Cookies from "js-cookie";
 const Play = () => {
+  interface gift {
+    overall?: {
+      total_point_count: string;
+      total_gift_count: string;
+      total_lottery_count: string;
+    };
+    gifts?: any[];
+  }
+  const [gifts, setGifts] = useState<gift>();
   const [play, setPlay] = useState(true);
   const [start, setStart] = useState(false);
   const router = useRouter();
   const [path, setPath] = useState(1);
-  const handleKeyPress = (event: { key: string }) => {
-    if (event.key === "ArrowRight") {
-      router.push("/inventory");
-    } else if (event.key === "Enter") {
-      setStart(true);
-    } else if (event.key === "BackSpace") {
-      router.push("/");
-    } else if (event.key === "ArrowUp") {
-      if (path > 1) {
-        setPath(path - 1);
-      } else {
-        setPath(4);
-      }
-    } else if (event.key === "ArrowDown") {
-      if (path < 4) {
-        setPath(path + 1);
-      } else {
-        setPath(1);
-      }
-    }
-  };
+
   const [mounted, setMounted] = useState(false);
   const userProfile = (pathNamba: number) => {
     if (path == pathNamba) {
@@ -41,7 +31,6 @@ const Play = () => {
             fill
             src={"/assets/Astro.png"}
           />
-
           <style jsx>{`
             @keyframes bounce {
               0%,
@@ -55,20 +44,62 @@ const Play = () => {
               }
             }
             .animate-bounce {
-              animation: bounce 3s infinite;
+              animation: bounce 2s infinite;
             }
           `}</style>
         </div>
       );
     }
   };
+  const [showGiftRecieve, setShowGiftRecieve] = useState(false);
+  const giftRecieve = () => {
+    if (showGiftRecieve == true) {
+      return <GiftRecieve />;
+    }
+  };
+
+  const [openedGift, setOpenedGift] = useState();
+  const openGift = async () => {
+    let res = await fetch("/api/openGift?subId=" + Cookies.get("userId"));
+    const data = await res.json();
+    const update = await fetch("/api/getGifts?subId=" + Cookies.get("userId"));
+
+    Cookies.set("openedGift", data.gift.gift_id);
+    Cookies.set("gifts", JSON.stringify(update));
+    setGifts(JSON.parse(Cookies.get("gifts") + ""));
+  };
   useEffect(() => {
     setMounted(true);
+    setGifts(JSON.parse(Cookies.get("gifts") + ""));
+    const handleKeyPress = (event: { key: string }) => {
+      if (event.key === "ArrowRight") {
+        router.push("/inventory");
+      } else if (event.key === "Enter") {
+        openGift();
+        setStart(true);
+        setShowGiftRecieve(!showGiftRecieve);
+      } else if (event.key === "BackSpace") {
+        router.push("/");
+      } else if (event.key === "ArrowUp") {
+        if (path > 1) {
+          setPath(path - 1);
+        } else {
+          setPath(4);
+        }
+      } else if (event.key === "ArrowDown") {
+        if (path < 4) {
+          setPath(path + 1);
+        } else {
+          setPath(1);
+        }
+      }
+    };
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [start, path]);
+  }, [start, path, showGiftRecieve]);
+
   return (
     <div
       className={`${
@@ -103,7 +134,6 @@ const Play = () => {
           >
             Миний бэлгүүд
           </button>
-          <p className="text-xl text-white font-bold">Path: {path}</p>
         </div>
         <div className="grid grid-cols-3 h-full gap-8">
           <div
@@ -112,7 +142,7 @@ const Play = () => {
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
             }}
-            className={`rounded-xl overflow-x-hidden flex items-center transition-all relative delay-100 duration-700 ease-in-out transform col-span-2 bg-slate-900 shadow-xl h-full`}
+            className={`rounded-xl overflow-hidden flex items-center transition-all relative delay-100 duration-700 ease-in-out transform col-span-2 bg-slate-900 shadow-xl h-full`}
           >
             <div
               className={`${
@@ -201,62 +231,73 @@ const Play = () => {
             </div>
           </div>
           <div
-            className={`transition-all rounded-xl text-slate-300 text-xl col-span-1 font-semibold bg-slate-950 space-y-4 border border-1 border-slate-700 shadow-xl p-8 h-full duration-700 ease-in-out transform delay-300`}
+            className={`transition-all flex flex-col justify-between rounded-xl text-slate-300 text-xl col-span-1 bg-opacity-70  bg-slate-950 space-y-4 border border-1 border-slate-700 shadow-xl p-8 h-full duration-700 ease-in-out transform delay-300`}
           >
-            <p
-              className={`${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              } transition-all duration-700 ease-in-out transform delay-300`}
-            >
-              Намрын урамшуулалт хөтөлбөр 2023
-            </p>
-            <p
-              className={`${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              } transition-all duration-700 ease-in-out transform delay-500`}
-            >
-              Үргэлжлэх хугацаа 2023.09.06 - 2023.10.17
-            </p>
-            <p
-              className={`${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              } transition-all duration-700 ease-in-out transform delay-700`}
-            >
-              Таны урамшууллын эрхийн тоо:
-              <span className="text-slate-200 text-2xl font-bold">
-                asdasdasd
-              </span>
-            </p>
-            <div
-              className={`${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              } transition-all relative h-96 duration-700 ease-in-out transform delay-1000`}
-            >
-              <Image
-                alt=""
-                fill
-                className="object-contain"
-                src="/assets/GiftBundle_Belen.png"
-              />
+            <div className="space-y-4">
+              <p
+                className={`${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                } transition-all duration-700 ease-in-out transform delay-300`}
+              >
+                Намрын урамшуулалт хөтөлбөр 2023
+              </p>
+              <p
+                className={`${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                } transition-all duration-700 ease-in-out transform delay-500`}
+              >
+                Үргэлжлэх хугацаа{" "}
+                <span className="text-white font-semibold">
+                  2023.09.06 - 2023.10.17
+                </span>
+              </p>
+              <p
+                className={`${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                } transition-all duration-700 ease-in-out transform delay-700`}
+              >
+                Таны урамшууллын эрхийн тоо:
+                <span className="text-slate-200 text-2xl font-bold p-2">
+                  {" "}
+                  {gifts?.overall?.total_point_count
+                    ? gifts?.overall?.total_point_count
+                    : 0}
+                  ш
+                </span>
+              </p>
+              <div
+                className={`${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                } transition-all relative h-96 duration-700 ease-in-out transform delay-1000`}
+              >
+                <Image
+                  alt=""
+                  fill
+                  className="object-contain"
+                  src="/assets/GiftBundle_Belen.png"
+                />
+              </div>
+              <p
+                className={`${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                } transition-all duration-700 ease-in-out transform delay-700`}
+              >
+                Заавар: <br />
+                Тоглох тутамд таны урамшууллын эрхээс{" "}
+                <span className="text-white font-semibold">1ш</span> хасагдах
+                болно.
+              </p>
             </div>
-            <p
-              className={`${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              } transition-all duration-700 ease-in-out transform delay-700`}
-            >
-              Заавар: <br />
-              Тоглох тутамд таны урамшууллын эрхээс 1ш хасагдах болно.
-            </p>
             <div
               className={`${
                 mounted
@@ -269,13 +310,24 @@ const Play = () => {
                 <p>Эхлэх</p>
               </div>
               <div className="flex items-center gap-4">
-                <div className="rounded-full outline p-2">OK</div>
+                <div className="rounded-full outline p-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-white -rotate-45 h-7 w-7"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <title>arrow-expand</title>
+                    <path d="M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z" />
+                  </svg>
+                </div>
                 <p>Зам сонгох</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {giftRecieve()}
     </div>
   );
 };

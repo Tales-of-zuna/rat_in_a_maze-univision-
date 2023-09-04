@@ -1,0 +1,80 @@
+{
+  "1000": {
+    "gift_name": "RUSSIAN-EURO-BUNDLE",
+    "gift_type": "SERVICE",
+    "gift_count": 2000,
+    "gift_description": "Орос-Европ багцыг 1 сар ашиглах эрх"
+  },
+  "1001": {
+    "gift_name": "CHINESE-BUNLE",
+    "gift_type": "SERVICE",
+    "gift_count": 2000,
+    "gift_description": "Хятад багцыг 1 сар ашиглах эрх"
+  },
+  "1002": {
+    "gift_name": "HOME_TEACHER-BUNDLE",
+    "gift_type": "SERVICE",
+    "gift_count": 2000,
+    "gift_description": "Гэрийн багш багцыг 1 сар ашиглах эрх"
+  },
+  "1003": {
+    "gift_name": "MMUSIC-KARAOKE-BUNDLE",
+    "gift_type": "SERVICE",
+    "gift_count": 2000,
+    "gift_description": "“Ммюзик” караоке апп 3 сар ашиглах эрх"
+  },
+  "1004": {
+    "gift_name": "Android TV (ATV) box",
+    "gift_type": "PHYSICAL",
+    "gift_count": 5,
+    "gift_description": "Android TV (ATV) box"
+  },
+  "1005": {
+    "gift_name": "Vlogging kit",
+    "gift_type": "PHYSICAL",
+    "gift_count": 3,
+    "gift_description": "Vlogging kit"
+  },
+  "1006": {
+    "gift_name": "Kindle 11",
+    "gift_type": "PHYSICAL",
+    "gift_count": 2,
+    "gift_description": "Kindle 11"
+  },
+  "1007": {
+    "gift_name": "Huawei smart watch",
+    "gift_type": "PHYSICAL",
+    "gift_count": 2,
+    "gift_description": "Huawei smart watch"
+  },
+  "1008": {
+    "gift_name": "HBO & Game of Thrones Gift Set",
+    "gift_type": "PHYSICAL",
+    "gift_count": 26,
+    "gift_description": "HBO & Game of Thrones бэлгийн багц"
+  },
+  "1010": {
+    "gift_name": "Dry frier",
+    "gift_type": "PHYSICAL",
+    "gift_count": 79,
+    "gift_description": "Dry frier"
+  },
+  "1011": {
+    "gift_name": "Airpods Pro 2",
+    "gift_type": "PHYSICAL",
+    "gift_count": 2,
+    "gift_description": "Airpods Pro 2"
+  },
+  "1012": {
+    "gift_name": "MNT_GIFT_CARD",
+    "gift_type": "VOUCHER",
+    "gift_count": 2,
+    "gift_description": "Монголын Нууц Товчоо амралтын газар - Амрах эрхийн бичиг (500K)"
+  },
+  "1009": {
+    "gift_name": "HBO T-Shirt, Cotton Bag Gift Set",
+    "gift_type": "PHYSICAL",
+    "gift_count": 4,
+    "gift_description": "HBO футболк & даавуун торны ком"
+  }
+}
